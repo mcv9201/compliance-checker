@@ -379,6 +379,12 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ url })
                     });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => null);
+                        const errorMessage = errorData?.error || `Server error: ${response.status}`;
+                        showError(errorMessage);
+                        return;
+                    }
                     const data = await response.json();
                     displayResults(data);
                 } catch (error) {
