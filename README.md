@@ -1,7 +1,7 @@
 # **Web Compliance Checker**
 
 ## **Overview**
-This project is a **Web Compliance Checker** that analyzes webpage content against compliance policies using **GPT-4o**. The system extracts text from a given URL, processes it through a structured prompt, and returns violations in a structured JSON format.
+This project is a **Web Compliance Checker** that analyzes webpage content against Stripe's public compliance policy https://stripe.com/docs/treasury/marketing-treasury using **GPT-4o**. The system extracts text from a given URL, processes it through a structured prompt, and returns violations in a structured JSON format.
 
 ## **Key Features**
 - **Structured Output with Pydantic:** Ensures predictable and validated responses from the model.
