@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f9fafb;
+            --text-dark: #111827;
+            --text-light: #6b7280;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #e5e7eb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background-color: var(--secondary);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            margin: 1.5rem auto;
+            border: 2px solid rgba(79, 70, 229, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .violation {
+            background-color: white;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fee2e2;
+        }
+        
+        .violation-header {
+            padding: 0.75rem 1.25rem;
+            background-color: #fee2e2;
+            display: flex;
+            align-items: center;
+        }
+        
+        .violation-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .violation-title {
+            font-weight: 600;
+            color: #b91c1c;
+        }
+        
+        .violation-body {
+            padding: 1.25rem;
+        }
+        
+        .violation-section {
+            margin-bottom: 1.25rem;
+        }
+        
+        .violation-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .violation-section-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .violation-section-title i {
+            margin-right: 0.5rem;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .violation-text {
+            background-color: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .policy-tag {
+            display: inline-block;
+            background-color: #e0e7ff;
+            color: #4338ca;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .suggestion {
+            background-color: #ecfdf5;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--success);
+        }
+        
+        .suggestion-title {
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .suggestion-title i {
+            margin-right: 0.5rem;
+        }
+        
+        .suggestion-content {
+            color: #047857;
+            font-size: 0.875rem;
+        }
+        
+        .no-violations {
+            background-color: #ecfdf5;
+            border-radius: 6px;
+            padding: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .no-violations i {
+            font-size: 2rem;
+            color: var(--success);
+            margin-bottom: 0.75rem;
+        }
+        
+        .no-violations-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #065f46;
+        }
+        
+        .error-message {
+            display: none;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 1rem 0;
+            border: 1px solid #fecaca;
+        }
+        
+        .copy-button {
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            float: right;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-button i {
+            margin-right: 0.25rem;
+        }
+        
+        .copy-button:hover {
+            background-color: #e5e7eb;
+        }
+        
+        @media (max-width: 640px) {
+            .card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1 class="title">Compliance Checker</h1>
+                <p class="subtitle">Verify your webpage against marketing compliance policies</p>
+            </div>
+            
+            <div class="form-control">
+                <label for="url" class="form-label">Enter webpage URL to check:</label>
+                <input type="text" id="url" class="form-input" placeholder="https://example.com" value="https://mercury.com/">
+            </div>
+            
+            <button id="check-button" class="btn btn-primary btn-block">
+                <i class="fas fa-search btn-icon"></i>
+                Check Compliance
+            </button>
+        </div>
+        
+        <div id="spinner" class="spinner"></div>
+        <div id="error-message" class="error-message"></div>
+        
+        <div id="results" class="results card">
+            <h2 class="results-title">Compliance Check Results</h2>
+            <div id="violations-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkButton = document.getElementById('check-button');
+            const urlInput = document.getElementById('url');
+            const spinner = document.getElementById('spinner');
+            const results = document.getElementById('results');
+            const violationsContainer = document.getElementById('violations-container');
+            const errorMessage = document.getElementById('error-message');
+
+            checkButton.addEventListener('click', async function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('Please enter a valid URL');
+                    return;
+                }
+                
+                // Clear previous results
+                violationsContainer.innerHTML = '';
+                errorMessage.style.display = 'none';
+                results.style.display = 'none';
+                spinner.style.display = 'block';
+                
+                // Mock API call
+                try {
+                    const response = await fetch('/check-compliance', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url })
+                    });
+                    const data = await response.json();
+                    displayResults(data);
+                } catch (error) {
+                    showError("An error occurred while checking compliance. Please try again.");
+                    console.error(error);
+                } finally {
+                    spinner.style.display = 'none';
+                }
+            });
+
+            function displayResults(data) {
+                results.style.display = 'block';
+                
+                if (!data.violations || data.violations.length === 0) {
+                    violationsContainer.innerHTML = `
+                        <div class="no-violations">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="no-violations-text">No compliance violations found!</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                data.violations.forEach((violation, index) => {
+                    const violationElement = document.createElement('div');
+                    violationElement.className = 'violation';
+                    
+                    violationElement.innerHTML = `
+                        <div class="violation-header">
+                            <div class="violation-number">${index + 1}</div>
+                            <div class="violation-title">Compliance Violation</div>
+                        </div>
+                        <div class="violation-body">
+                            <div class="violation-section">
+                                <div class="violation-section-title">
+                                    <i class="fas fa-exclamation-circle" style="color: #dc2626;"></i>
+                                    Violated Policy
+                                </div>
+                                <div class="policy-tag">${escapeHtml(violation.policy_violated)}</div>
+                            </div>
+                            
+                            <div class="violation-section">
+                                <div class="violation-section-title">
+                                    <i class="fas fa-align-left" style="color: #dc2626;"></i>
+                                    Violated Text
+                                </div>
+                                <div class="violation-text">${escapeHtml(violation.violation_text)}</div>
+                            </div>
+                            
+                            <div class="violation-section">
+                                <div class="violation-section-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Explanation
+                                </div>
+                                <div>${escapeHtml(violation.explanation)}</div>
+                            </div>
+                            
+                            <div class="violation-section">
+                                <div class="suggestion">
+                                    <div class="suggestion-title">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Suggested Fix
+                                    </div>
+                                    <div class="suggestion-content">${escapeHtml(violation.suggestion)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    violationsContainer.appendChild(violationElement);
+                });
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        });
+    </script>
+</body>
+</html>
