@@ -58,7 +58,6 @@ def extract_text_from_webpage(url):
         
         soup = BeautifulSoup(response.text, "html.parser")
         for tag in soup.find_all(['a', 'img']):
-            tag.insert_before(' ')
             tag.decompose()
         
         markdown_text = markdownify.markdownify(str(soup), heading_style="ATX")
