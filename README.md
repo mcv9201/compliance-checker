@@ -59,7 +59,7 @@ The app will be available at `http://127.0.0.1:5000/`
 
 ### **3. Structured Output Handling**
 - The model's response is structured using **Pydantic**.
-- `Violate` and `Violates` classes enforce type validation:
+- `Violation` and `Violations` classes enforce type validation:
   ```python
   class Violation(BaseModel):
       violation_text: str  
