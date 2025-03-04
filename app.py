@@ -15,7 +15,7 @@ def check_compliance():
         if not data or 'url' not in data:
             return jsonify({"error": "URL is required"}), 400
         
-        url = data['url']
+        url = data['url'].strip()
         webtext = extract_text_from_webpage(url)
 
         with open("./prompts/compliance_terms.txt", "r", encoding="utf-8") as file:
