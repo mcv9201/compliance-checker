@@ -1,0 +1,19 @@
+"""
+Analyze the following webpage content for potential compliance violations based on the provided policies.
+Identify specific instances where the content may breach compliance rules and return the findings in a structured JSON format.
+
+For each violation, include:
+
+violation_text: The exact text that violates the policy
+policy_violated: The specific policy that is violated
+explanation: Why this violates the policy
+suggestion: A compliant alternative
+
+If no violations are found, return an empty array ([]).
+
+Compliance Policies:
+{compliance_terms}
+
+Webpage Content:
+{webpage_content}
+"""
