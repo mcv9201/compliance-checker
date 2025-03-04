@@ -83,16 +83,10 @@ Example Response:
 {
     "violations": [
         {
-            "explanation": "The term 'yield' implies interest, which contradicts the cash back compliance guidelines that explicitly state not to refer to cash back as 'interest' or 'yield'.",
             "policy_violated": "Cash back compliance marketing guidance",
-            "suggestion": "Rephrase as 'Earn up to 4.50% cash back on your idle cash with portfolios powered by J.P. Morgan and Morgan Stanley' to comply with guidelines.",
             "violation_text": "Earn up to 4.50% yield on your idle cash with portfolios powered by J.P. Morgan and Morgan Stanley"
-        },
-        {
-            "explanation": "The mention of 'Banking services provided by... Members FDIC' implies direct FDIC insurance for the accounts, but it does not disclose the necessary information about FDIC pass-through insurance, as required by the guidelines.",
-            "policy_violated": "How to talk about FDIC insurance eligibility",
-            "suggestion": "Add a disclaimer such as: 'Mercury accounts are eligible for FDIC pass-through deposit insurance if they meet certain requirements. The FDIC insurance applies up to 250,000 USD per depositor, per financial institution, for funds held in the same ownership capacity. Neither Mercury nor you are an FDIC-insured institution.'",
-            "violation_text": "Open Account\nOpen Account\nMercury is a financial technology company, Banking services provided by Choice Financial Group, Column N.A., and Evolve Bank & Trust®; Members FDIC."
+            "explanation": "The term 'yield' implies interest, which contradicts the cash back compliance guidelines that explicitly state not to refer to cash back as 'interest' or 'yield'.",
+            "suggestion": "Rephrase as 'Earn up to 4.50% cash back on your idle cash with portfolios powered by J.P. Morgan and Morgan Stanley' to comply with guidelines.",  
         }
     ]
 }
