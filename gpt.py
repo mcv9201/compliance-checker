@@ -9,14 +9,14 @@ from bs4 import BeautifulSoup
 
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
-class Violate(BaseModel):
+class Violation(BaseModel):
     violation_text: str  
     policy_violated: str
     explanation: str 
     suggestion: str
 
-class Violates(BaseModel):
-    violations: List[Violate]
+class Violations(BaseModel):
+    violations: List[Violation]
 
 def get_gpt_response(webpage_content, compliance_terms):
     user_prompt = get_user_prompt(webpage_content, compliance_terms)
@@ -27,7 +27,7 @@ def get_gpt_response(webpage_content, compliance_terms):
                 {"role": "system", "content": "You are a financial compliance expert that analyzes webpages against compliance policies."},
                 {"role": "user", "content":user_prompt}
             ],
-            response_format=Violates
+            response_format=Violations
         )
         
         try:
